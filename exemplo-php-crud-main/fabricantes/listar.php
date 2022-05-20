@@ -1,7 +1,9 @@
 <?php 
-require_once "../src/funcoes-fabricantes.php"; 
-$listaDeFabricantes = lerFabricantes($conexao);
+    require_once "../src/funcoes-fabricantes.php"; 
+    $listaDeFabricantes = lerFabricantes($conexao);
 ?>
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -22,6 +24,11 @@ $listaDeFabricantes = lerFabricantes($conexao);
             </a>
         </p>
 
+        <?php if(isset ($_GET['status']) && $_GET['status'] == 'sucesso'){ ?>
+            <p>Fabricante atualizado com sucesso</p>
+        <?php } ?>
+        
+        
 
         <table>
             <caption>Lista de Fabricantes</caption>
@@ -38,15 +45,30 @@ $listaDeFabricantes = lerFabricantes($conexao);
                     <td> <?=$fabricante["id"]?> </td>
                     <td> <?=$fabricante["nome"]?> </td>
                     <td><a href="atualizar.php?id=<?=$fabricante['id']?>">Atualizar</a></td>
-                    <td><a href="">Excluir</a></td>
+                                                                        <!-- função que determina se um evento vai dar continuidade ou não. neste caso abaixo é para saber se é pra apagar ou não onclick="return confirm('Deseja mesmo excluir?')" -->
+                    <td><a class="excluir" href="excluir.php?id=<?=$fabricante['id']?>">Excluir</a></td>
                 </tr>
             <?php
-            }
-?>
+             }
+            ?>
 
             </tbody>
         </table>
-
     </div>
+
+    <script>
+        // acessar todos os links com a classe excluir
+        const links =  document.querySelectorAll('.excluir');
+        for(let i=0; i<links.length; i++){
+            event.preventDefault();
+            let resposta = confirm("Deseja realmente excluir? ");
+            if(resposta) location.href = links[i].getAttribute('href');
+        }
+
+    </script>
+
+    
+
+
 </body>
 </html>
